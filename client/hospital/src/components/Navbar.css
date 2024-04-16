@@ -1,0 +1,28 @@
+.navbar-container {
+  background-color: #c91616;
+  padding: 55px; /* Increased padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  
+
+}
+
+.navbar-container a {
+  color: rgb(204, 13, 13);
+  text-decoration: none;
+  margin-right: 50px; 
+  font-size: 20px; 
+}
+
+.navbar-container a:hover {
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  font-size: 48px; 
+  font-weight: bold;
+  color: white;
+  margin-right: 60px; /
+}
