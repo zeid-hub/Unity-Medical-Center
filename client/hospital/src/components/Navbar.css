@@ -1,0 +1,28 @@
+.navbar-container {
+  background-color: #324B4E;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  font-size: 22px;
+  font-family: 'Dancing Script', cursive;
+}
+
+.navbar-container a {
+  color: rgb(207, 204, 207);
+  text-decoration: none;
+  margin-right: 50px; 
+  font-size: 20px; 
+}
+
+.navbar-container a:hover {
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  font-size: 48px; 
+  font-weight: bold;
+  color: white;
+  margin-right: 60px; 
+}
