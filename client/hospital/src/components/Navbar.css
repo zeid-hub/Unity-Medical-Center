@@ -1,16 +1,16 @@
 .navbar-container {
-  background-color: #c91616;
-  padding: 55px; /* Increased padding */
+  background-color: #324B4E;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
-  
-
+  margin: 10px;
+  font-size: 22px;
+  font-family: 'Dancing Script', cursive;
 }
 
 .navbar-container a {
-  color: rgb(204, 13, 13);
+  color: rgb(207, 204, 207);
   text-decoration: none;
   margin-right: 50px; 
   font-size: 20px; 
@@ -24,5 +24,5 @@
   font-size: 48px; 
   font-weight: bold;
   color: white;
-  margin-right: 60px; /
+  margin-right: 60px; 
 }
