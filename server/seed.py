@@ -4,7 +4,7 @@ from faker import Faker
 from datetime import datetime
 import random
 from app import app
-from models import db, Doctor, Nurse, Patient, Appointment, Department
+from models import db, Doctor, Nurse, Patient, Appointment, Department, User
 
 fake = Faker()
 
@@ -170,6 +170,7 @@ with app.app_context():
     db.session.query(Nurse).delete()
     db.session.query(Doctor).delete()
     db.session.query(Department).delete()
+    db.session.query(User).delete()
     db.session.commit()
 
     # Creating departments
@@ -190,7 +191,7 @@ with app.app_context():
     # Creating doctors
     print("Creating doctors...")
     doctors = []
-    for _ in range(50):
+    for _ in range(15):
         doctor = Doctor(
             name=fake.name(),
             license_number=fake.random_number(digits=5),
@@ -206,7 +207,7 @@ with app.app_context():
     # Creating nurses
     print("Creating nurses...")
     nurses = []
-    for _ in range(50):
+    for _ in range(15):
         nurse = Nurse(
             name=fake.name(),
             department_id=fake.random_element(elements=[dep.id for dep in departments]),
@@ -222,7 +223,7 @@ with app.app_context():
     # Creating patients
     print("Creating patients...")
     patients = []
-    for _ in range(50):
+    for _ in range(30):
         patient = Patient(
             name=fake.name(),
             age=fake.random_int(min=18, max=90),
@@ -240,7 +241,7 @@ with app.app_context():
     # Creating appointments
     print("Creating appointments...")
     appointments = []
-    for _ in range(50):
+    for _ in range(20):
         appointment = Appointment(
             patient_name=fake.name(),
             reason=random.choice(appointment_reasons),
@@ -252,5 +253,18 @@ with app.app_context():
 
     db.session.add_all(appointments)
     db.session.commit()
+
+    # Creating users
+    # print("Creating users...")
+    # users = []
+    # for _ in range(10):  
+    #     user = User(
+    #         username=fake.name(),  
+    #         _password_hash=fake.password(),
+    #     )
+    #     users.append(user)
+
+    # db.session.add_all(users)
+    # db.session.commit()
 
     print("Data seeding completed.")
