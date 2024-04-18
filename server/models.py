@@ -1,14 +1,8 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+from config import db, bcrypt
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy_serializer import SerializerMixin
-
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
-
-db = SQLAlchemy(metadata=metadata)
 
 # Define association table
 appointment_patient_association = db.Table(
@@ -22,6 +16,26 @@ nurse_patient_association = db.Table(
     db.Column('nurse_id', db.Integer, db.ForeignKey('nurses.id')),
     db.Column('patient_id', db.Integer, db.ForeignKey('patients.id'))
 )
+class User(db.Model, SerializerMixin):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True)
+    _password_hash = db.Column(db.String, nullable=False)
+
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+    
+    @password_hash.setter
+    def password_hash(self,my_password):
+        my_value = bcrypt.generate_password_hash(my_password.encode('utf-8'))
+        self._password_hash = my_value.decode('utf-8')
+
+    def authenticate(self,my_password):
+        is_true = bcrypt.check_password_hash(self._password_hash, userpassword.encode('utf-8'))
+        return is_true
+
 
 class Doctor(db.Model, SerializerMixin):
     __tablename__ = "doctors"
@@ -105,8 +119,6 @@ class Appointment(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f"<Appointment {self.id}, {self.patient_name}, {self.reason}, {self.doctor_name}, {self.datetime}, {self.doctor_id}, {self.patient_id}>"
-
-
 
 class Department(db.Model, SerializerMixin):
     __tablename__ = "departments"

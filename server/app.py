@@ -1,22 +1,5 @@
-from models import db, Doctor, Patient, Nurse, Appointment, Department
-from flask_migrate import Migrate
-from flask import Flask, request, make_response, jsonify
-from flask_restful import Api, Resource
-import os
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get(
-    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
-
-migrate = Migrate(app, db)
-
-db.init_app(app)
-api = Api(app)
+from config import app, db, api, Resource, make_response, jsonify, request
+from models import User, Doctor, Patient, Nurse, Appointment, Department
 
 class Home(Resource):
     def get(self):
@@ -30,6 +13,35 @@ class Home(Resource):
         )
     
 api.add_resource(Home, "/")
+
+class AddUser(Resource):
+    def post(self):
+        data = request.get_json()
+        new_user = User(username=data['username'])
+        new_user._password_hash = data['password']
+        db.session.add(new_user)
+        db.session.commit()
+        return make_response({"message":"USer Created Successfully"},201)
+
+api.add_resource(AddUser, "/adduser")
+
+class LoginUser(Resource):
+    def post(self):
+        data = request.get_json()
+        user = User.query.filter_by(username=data['username']).first()
+        if user.authenticate(data['password']):
+            return make_response(
+                jsonify({"message":"Login Successful"}),
+                200
+            )
+        else:
+            return make_response(
+                jsonify({"error":"You are not the User"}),
+                403
+            )
+            
+api.add_resource(LoginUser, "/login")
+
 
 class Doctors(Resource):
     def get(self):
