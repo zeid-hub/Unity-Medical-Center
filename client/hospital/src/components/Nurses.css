@@ -1,0 +1,75 @@
+/* Nurses.css */
+
+/* Style the container of nurse items */
+.nurse-list {
+  display: flex;
+  flex-direction: column; /* Align items vertically */
+  align-items: center; /* Center items horizontally */
+}
+
+/* Rest of your existing CSS */
+.nurse-container {
+  max-width: 900px;
+  padding: 40px;
+  background-color: #f0f0f0; /* Light gray background */
+  border-radius: 10px;
+}
+
+.nurse-container h2 {
+  color: #333; /* Dark gray */
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.nurse-container button {
+  background-color: #3b5998; /* Sky blue */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.nurse-form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333; /* Dark gray */
+}
+
+.nurse-form input[type="text"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.nurse-item {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  flex-direction: column;
+}
+
+.nurse-item h3 {
+  color: #3b5998; /* Sky blue */
+  margin-bottom: 10px;
+}
+
+.nurse-item button {
+  background-color: #d32f2f; /* Red */
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.nurse-item button:hover {
+  background-color: #b71c1c; /* Darker red */
+}
