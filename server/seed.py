@@ -211,9 +211,9 @@ with app.app_context():
         nurse = Nurse(
             name=fake.name(),
             department_id=fake.random_element(elements=[dep.id for dep in departments]),
-            license_number=random.choice(["English", "Kiswahili", "Arabic", "French", "Turkish", "Kisomali", "Kiluhya", "Kikamba"]),
+            license_number= fake.random_number(digits=5),
             doctor_id=fake.random_element(elements=[doc.id for doc in doctors]),
-            language_spoken=fake.language_code()
+            language_spoken= random.choice(["English", "Kiswahili", "Arabic", "French", "Turkish", "Kisomali", "Kiluhya", "Kikamba"])
         )
         nurses.append(nurse)
 
