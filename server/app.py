@@ -147,8 +147,8 @@ class Nurses(Resource):
                 "name": nurse.name,
                 "license_number": nurse.license_number,
                 "language_spoken": nurse.language_spoken,
-                "doctor_id" : nurse.doctor.id,
-                "department_id": nurse.department.id
+                "doctor_id": nurse.doctor.id if nurse.doctor else None,
+                "department_id": nurse.department.id if nurse.department else None
             }
             for nurse in nurses
         ]
@@ -253,15 +253,14 @@ class Patients(Resource):
     def post(self):
         data = request.get_json()
         
-        new_patient = Nurse(
-            id = data["id"],
-            name = data["name"],
-            age = data["age"],
-            gender = data["gender"],
-            contact = data["contact"],
-            diagnosis = data["diagnosis"],
-            bed_number = data["bed_number"],
-            dector_id = data["doctor_id"]
+        new_patient = Patient(
+            name=data["name"],
+            age=data["age"],
+            gender=data["gender"],
+            contact=data["contact"],
+            diagnosis=data["diagnosis"],
+            bed_number=data["bed_number"],
+            doctor_id=data["doctor_id"]
         )
         db.session.add(new_patient)
         db.session.commit()

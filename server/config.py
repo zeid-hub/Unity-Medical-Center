@@ -2,6 +2,7 @@ from flask import Flask, request, make_response, jsonify
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
 import os
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
@@ -16,6 +17,6 @@ app.json.compact = False
 
 db = SQLAlchemy(app)  # Initialize SQLAlchemy object
 migrate = Migrate(app, db)  # Initialize migration object
-
+CORS(app)
 api = Api(app)
 bcrypt = Bcrypt(app)

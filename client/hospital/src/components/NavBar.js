@@ -11,7 +11,7 @@ function NavBar() {
             <NavLink to="/doctors">DOCTORS</NavLink>
             <NavLink to="/patients">PATIENTS</NavLink>
             <NavLink to="/nurses">NURSES</NavLink>
-            <NavLink to="/ppointment">APPOINTMENTS</NavLink>
+            <NavLink to="/appointment">APPOINTMENTS</NavLink>
          
             <button>Make Appointment</button>
         </div>

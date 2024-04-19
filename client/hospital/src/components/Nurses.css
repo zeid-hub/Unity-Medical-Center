@@ -1,75 +1,61 @@
-/* Nurses.css */
-
-/* Style the container of nurse items */
-.nurse-list {
-  display: flex;
-  flex-direction: column; /* Align items vertically */
-  align-items: center; /* Center items horizontally */
-}
-
-/* Rest of your existing CSS */
-.nurse-container {
-  max-width: 900px;
-  padding: 40px;
-  background-color: #f0f0f0; /* Light gray background */
-  border-radius: 10px;
-}
-
-.nurse-container h2 {
-  color: #333; /* Dark gray */
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.nurse-container button {
-  background-color: #3b5998; /* Sky blue */
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.nurse-form label {
-  display: block;
-  margin-bottom: 5px;
-  color: #333; /* Dark gray */
-}
-
-.nurse-form input[type="text"] {
-  width: calc(100% - 20px);
-  padding: 10px;
+/* NurseForm Component Styles */
+.nurse-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-bottom: 10px;
 }
 
-.nurse-item {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
+.nurse-form-container h2 {
   margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  justify-content: center;
-  flex-direction: column;
 }
 
-.nurse-item h3 {
-  color: #3b5998; /* Sky blue */
+.nurse-form-container form label {
+  display: block;
   margin-bottom: 10px;
 }
 
-.nurse-item button {
-  background-color: #d32f2f; /* Red */
-  color: #fff;
-  padding: 8px 16px;
+.nurse-form-container form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.nurse-form-container form button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.nurse-item button:hover {
-  background-color: #b71c1c; /* Darker red */
+.nurse-form-container form button:hover {
+  background-color: #45a049;
+}
+
+.nurse-form-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nurse-form-container ul li {
+  margin-bottom: 10px;
+}
+
+.nurse-form-container ul li button {
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.nurse-form-container ul li button:hover {
+  background-color: #d32f2f;
 }
