@@ -1,82 +1,91 @@
-/* General styles */
-body {
-  font-family: 'Ubuntu Mono', monospace; /* Monospace font for futuristic feel */
-  
-  margin: 0;
-  padding: 0;
-  background-position: 0cqi;
-  background-image: url(https://shorturl.at/bgyH4);
-}
-
-.container {
-  width: 70%;
+/* Doctors Page Styling */
+.doctors {
+  max-width: 700px; /* Increased max-width for better responsiveness */
   margin: 0 auto;
-  padding: 3rem;
-  border: none; /* Remove border */
-  border-radius: 10px; /* More rounded corners */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  background: #fff; /* White background */
-}
-
-/* Header styles */
-.header {
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 2.5rem; /* Larger header size */
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2); /* Slight text shadow */
-  font-family: 'Exo 2', sans-serif; /* Futuristic font for header */
-}
-
-.header span.span {
-  color: #33ffff; /* Brighter Cyan accent */
-  animation: neon 2s ease-in-out infinite alternate; /* Neon animation */
-}
-
-/* List styles */
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.list li {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  padding: 20px;
+  border: 1px solid #ddd; /* Adjusted border color for better contrast */
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1); /* Inner shadow */
-  display: flex; /* Arrange info side-by-side */
-  justify-content: space-between; /* Align info evenly */
+  background-color: #f5f5f5; /* Lighter background color */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  min-height: 100vh; /* Set minimum height to fill viewport */
+  display: flex; /* Allow vertical centering */
+  flex-direction: column; /* Stack content vertically */
+  justify-content: center; /* Center content vertically */
+  overflow-y: auto; /* Add scrollbar if content overflows */
 }
 
-/* Inner header styles */
-.inner-header {
+/* Add Doctor Form Styles */
+.add-doctor-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.add-doctor-form label {
+  flex: 1; /* Make labels take up equal space */
+  margin-bottom: 5px;
+}
+
+.add-doctor-form input,
+.add-doctor-form select {
+  width: 100%;
+  padding: 10px; /* Increased padding for a more spacious feel */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem; /* Use rem for better responsiveness */
+}
+
+.add-doctor-form button {
+  background-color: #4CAF50; /* Green color for primary button */
+  color: white;
+  padding: 12px 20px; /* Increased button size */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out all; /* Smooth hover effect */
+}
+
+.add-doctor-form button:hover {
+  background-color: #3e8e41; /* Darken green on hover */
+}
+
+/* Doctors List Styles */
+.doctors-list {
+  list-style: none; /* Remove default bullet points */
+  padding: 0;
+}
+
+.doctor-item {
+  margin-bottom: 20px;
+  padding: 15px; /* Adjusted padding for better readability */
+  border: 1px solid #ddd; /* Adjusted border color for better contrast */
+  border-radius: 5px;
+  background-color: #fff; /* White background */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle bottom shadow */
+  transition: 0.3s ease-in-out all; /* Smooth hover effect */
+}
+
+.doctor-item h2 {
   margin-top: 0;
-  font-size: 1.5rem; /* Slightly bigger inner header */
-  font-family: 'Exo 2', sans-serif; /* Futuristic font */
+  margin-bottom: 10px;
+  font-size: 1.2rem; /* Use rem for better responsiveness */
 }
 
-.inner-header span.name {
-  color: #ff33ff; /* Brighter Magenta */
+.doctor-item p {
+  margin: 5px 0;
 }
 
-/* Information styles */
-h4 {
-  margin-top: 0.5rem;
-  font-size: 16px; /* Bigger text */
-  color: #555; /* Dark gray */
+.doctor-item button { /* Assuming you have a delete button */
+  background-color: #dc3545; /* Red color for secondary button */
+  color: white;
+  padding: 8px 15px; /* Adjusted padding for better button size */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out all; /* Smooth hover effect */
 }
 
-/* Different colors for each doctor info (using nth-child selector) */
-.list li:nth-child(odd) h4 {  /* For odd-numbered doctors */
-  color: #22ff22; /* Brighter Lime green */
-}
-
-.list li:nth-child(even) h4 { /* For even-numbered doctors */
-  color: #ffaa00; /* Brighter Orange */
-}
-
-/* Alternative color approach (using a class) */
-.doctor-info-alt {
-  color: #aaff22; /* Brighter Light green */
+.doctor-item button:hover {
+  background-color: #c82333; /* Darken red on hover */
 }

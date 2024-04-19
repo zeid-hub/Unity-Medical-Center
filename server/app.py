@@ -1,35 +1,12 @@
-from models import db, Doctor, Patient, Nurse, Appointment, Department
-from flask_migrate import Migrate
-from flask_cors import CORS
-from flask import Flask, request, make_response, jsonify
-from flask_restful import Api, Resource
-import os
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-DATABASE = os.environ.get(
-    "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.json.compact = False
-
-migrate = Migrate(app, db)
-
-db.init_app(app)
-CORS(app)
-api = Api(app)
+from config import app, db, api, Resource, make_response, jsonify, request
+from models import User, Doctor, Patient, Nurse, Appointment, Department
 
 class Home(Resource):
     def get(self):
         response = {
             "message": "Welcome to our Unity Medical Centre"
         }
-
-        return make_response(
-            jsonify(response),
-            200
-        )
+        return make_response(jsonify(response), 200)
     
 api.add_resource(Home, "/")
 
@@ -37,10 +14,10 @@ class AddUser(Resource):
     def post(self):
         data = request.get_json()
         new_user = User(username=data['username'])
-        new_user._password_hash = data['password']
+        new_user.set_password(data['password'])  # Use set_password method to hash the password
         db.session.add(new_user)
         db.session.commit()
-        return make_response({"message":"USer Created Successfully"},201)
+        return make_response({"message": "User Created Successfully"}, 201)
 
 api.add_resource(AddUser, "/adduser")
 
@@ -48,16 +25,10 @@ class LoginUser(Resource):
     def post(self):
         data = request.get_json()
         user = User.query.filter_by(username=data['username']).first()
-        if user.authenticate(data['password']):
-            return make_response(
-                jsonify({"message":"Login Successful"}),
-                200
-            )
+        if user and user.authenticate(data['password']):
+            return make_response(jsonify({"message": "Login Successful"}), 200)
         else:
-            return make_response(
-                jsonify({"error":"You are not the User"}),
-                403
-            )
+            return make_response(jsonify({"error": "Invalid Credentials"}), 403)
             
 api.add_resource(LoginUser, "/login")
 
@@ -73,45 +44,38 @@ class Doctors(Resource):
                 "specialization": doctor.specialization,
                 "language_spoken": doctor.language_spoken,
                 "department_name": doctor.department_name,
-                "department_id": doctor.department.id
+                "department_id": doctor.department.id if doctor.department else None
             }
             for doctor in doctors
         ]
-        response = make_response(
-            jsonify(my_doctor_lists),
-            200
-        )
+        response = make_response(jsonify(my_doctor_lists), 200)
         return response
+
     
     def post(self):
         data = request.get_json()
         
         new_doctor = Doctor(
-            id = data["id"],
-            name = data["name"],
-            license_number = data["license_number"],
-            specialization = data["specialization"],
-            language_spoken = data["language_spoken"],
-            department_name = data["department_name"],
-            department_id = data["department_id"]
+            id=data["id"],
+            name=data["name"],
+            license_number=data["license_number"],
+            specialization=data["specialization"],
+            language_spoken=data["language_spoken"],
+            department_name=data["department_name"],
+            department_id=data["department_id"]
         )
         db.session.add(new_doctor)
         db.session.commit()
-        response = {
-            "message": "Your doctor has been added successfully"
-        }
-        return make_response(
-            jsonify(response),
-            201
-        )
+        response = {"message": "Your doctor has been added successfully"}
+        return make_response(jsonify(response), 201)
 
 api.add_resource(Doctors, "/doctors")
 
 class DoctorById(Resource):
     def get(self, id):
-        doctors_id = Doctor.query.all()
-        doctors_id_list = [
-            {
+        doctor = Doctor.query.get(id)
+        if doctor:
+            response = {
                 "id": doctor.id,
                 "name": doctor.name,
                 "license_number": doctor.license_number,
@@ -120,41 +84,30 @@ class DoctorById(Resource):
                 "department_name": doctor.department_name,
                 "department_id": doctor.department.id
             }
-            for doctor in doctors_id
-        ]
-        response = make_response(
-            jsonify(doctors_id_list),
-            200
-        )
-        return response
-    
+            return make_response(jsonify(response), 200)
+        else:
+            return make_response(jsonify({"error": "Doctor not found"}), 404)
+
     def patch(self, id):
-        updating_doctor = Doctor.query.filter_by(id=id).first()
-        for attr in request.form:
-            setattr(updating_doctor, attr, request.form[attr])
+        doctor = Doctor.query.get(id)
+        if doctor:
+            data = request.get_json()
+            for key, value in data.items():
+                setattr(doctor, key, value)
+            db.session.commit()
+            return make_response(jsonify(doctor.to_dict()), 200)
+        else:
+            return make_response(jsonify({"error": "Doctor not found"}), 404)
 
-        db.session.add(updating_doctor)
-        db.session.commit()
-
-        response = make_response(
-            updating_doctor.to_dict,
-            200
-        )
-
-        return response
-    
     def delete(self, id):
-        deleting_doctor = Doctor.query.filter_by(id=id).first()
-        db.session.delete(deleting_doctor)
-        db.session.commit()
-        response = {
-            "message": "Your doctor has been deleted successfully"
-        }
-        return make_response(
-            jsonify(response),
-            200
-        )
-    
+        doctor = Doctor.query.get(id)
+        if doctor:
+            db.session.delete(doctor)
+            db.session.commit()
+            return make_response(jsonify({"message": "Doctor deleted successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Doctor not found"}), 404)
+
 api.add_resource(DoctorById, "/doctors/<int:id>")
 
 class Nurses(Resource):
@@ -166,85 +119,68 @@ class Nurses(Resource):
                 "name": nurse.name,
                 "license_number": nurse.license_number,
                 "language_spoken": nurse.language_spoken,
-                "doctor_id" : nurse.doctor.id,
-                "department_id": nurse.department.id
+                "doctor_id": nurse.doctor_id,
+                "department_id": nurse.department_id
             }
             for nurse in nurses
         ]
-        response = make_response(
-            jsonify(my_nurse_lists),
-            200
-        )
+        response = make_response(jsonify(my_nurse_lists), 200)
         return response
     
     def post(self):
         data = request.get_json()
         
         new_nurse = Nurse(
-            id = data["id"],
-            name = data["name"],
-            license_number = data["license_number"],
-            language_spoken = data["language_spoken"],
-            department_id = data["department_id"]
+            id=data["id"],
+            name=data["name"],
+            license_number=data["license_number"],
+            language_spoken=data["language_spoken"],
+            doctor_id=data["doctor_id"],
+            department_id=data["department_id"]
         )
         db.session.add(new_nurse)
         db.session.commit()
-        response = {
-            "message": "Your nurse has been added successfully"
-        }
-        return make_response(
-            jsonify(response),
-            201
-        )
+        response = {"message": "Your nurse has been added successfully"}
+        return make_response(jsonify(response), 201)
 
 api.add_resource(Nurses, "/nurses")
 
 class NurseById(Resource):
     def get(self, id):
-        nurses_id = Doctor.query.all()
-        nurses_id_list = [
-            {
+        nurse = Nurse.query.get(id)
+        if nurse:
+            response = {
                 "id": nurse.id,
                 "name": nurse.name,
                 "license_number": nurse.license_number,
                 "language_spoken": nurse.language_spoken,
-                "department_id": nurse.department.id
+                "doctor_id": nurse.doctor_id,
+                "department_id": nurse.department_id
             }
-            for nurse in nurses_id
-        ]
-        response = make_response(
-            jsonify(nurses_id_list),
-            200
-        )
-        return response
-    
+            return make_response(jsonify(response), 200)
+        else:
+            return make_response(jsonify({"error": "Nurse not found"}), 404)
+
     def patch(self, id):
-        updating_nurse = Nurse.query.filter_by(id=id).first()
-        for attr in request.form:
-            setattr(updating_nurse, attr, request.form[attr])
+        nurse = Nurse.query.get(id)
+        if nurse:
+            data = request.get_json()
+            for key, value in data.items():
+                setattr(nurse, key, value)
+            db.session.commit()
+            return make_response(jsonify(nurse.to_dict()), 200)
+        else:
+            return make_response(jsonify({"error": "Nurse not found"}), 404)
 
-        db.session.add(updating_nurse)
-        db.session.commit()
-
-        response = make_response(
-            updating_nurse.to_dict,
-            200
-        )
-
-        return response
-    
     def delete(self, id):
-        deleting_nurse = Nurse.query.filter_by(id=id).first()
-        db.session.delete(deleting_nurse)
-        db.session.commit()
-        response = {
-            "message": "Your nurse has been deleted successfully"
-        }
-        return make_response(
-            jsonify(response),
-            200
-        )
-    
+        nurse = Nurse.query.get(id)
+        if nurse:
+            db.session.delete(nurse)
+            db.session.commit()
+            return make_response(jsonify({"message": "Nurse deleted successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Nurse not found"}), 404)
+
 api.add_resource(NurseById, "/nurses/<int:id>")
 
 class Patients(Resource):
@@ -259,46 +195,38 @@ class Patients(Resource):
                 "contact": patient.contact,
                 "diagnosis": patient.diagnosis,
                 "bed_number": patient.bed_number,
-                "doctor_id" : patient.doctor.id,
+                "doctor_id": patient.doctor_id,
             }
             for patient in patients
         ]
-        response = make_response(
-            jsonify(my_patient_lists),
-            200
-        )
+        response = make_response(jsonify(my_patient_lists), 200)
         return response
     
     def post(self):
         data = request.get_json()
         
-        new_patient = Nurse(
-            id = data["id"],
-            name = data["name"],
-            age = data["age"],
-            gender = data["gender"],
-            contact = data["contact"],
-            diagnosis = data["diagnosis"],
-            bed_number = data["bed_number"],
-            dector_id = data["doctor_id"]
+        new_patient = Patient(
+            id=data["id"],
+            name=data["name"],
+            age=data["age"],
+            gender=data["gender"],
+            contact=data["contact"],
+            diagnosis=data["diagnosis"],
+            bed_number=data["bed_number"],
+            doctor_id=data["doctor_id"]
         )
         db.session.add(new_patient)
         db.session.commit()
-        response = {
-            "message": "Your patient has been added successfully"
-        }
-        return make_response(
-            jsonify(response),
-            201
-        )
+        response = {"message": "Your patient has been added successfully"}
+        return make_response(jsonify(response), 201)
 
 api.add_resource(Patients, "/patients")
 
 class PatientById(Resource):
     def get(self, id):
-        patients_id = Patient.query.all()
-        patients_id_list = [
-            {
+        patient = Patient.query.get(id)
+        if patient:
+            response = {
                 "id": patient.id,
                 "name": patient.name,
                 "age": patient.age,
@@ -306,43 +234,32 @@ class PatientById(Resource):
                 "contact": patient.contact,
                 "diagnosis": patient.diagnosis,
                 "bed_number": patient.bed_number,
-                "doctor_id" : patient.doctor.id,
+                "doctor_id": patient.doctor_id,
             }
-            for patient in patients_id
-        ]
-        response = make_response(
-            jsonify(patients_id_list),
-            200
-        )
-        return response
-    
+            return make_response(jsonify(response), 200)
+        else:
+            return make_response(jsonify({"error": "Patient not found"}), 404)
+
     def patch(self, id):
-        updating_patient = Patient.query.filter_by(id=id).first()
-        for attr in request.form:
-            setattr(updating_patient, attr, request.form[attr])
+        patient = Patient.query.get(id)
+        if patient:
+            data = request.get_json()
+            for key, value in data.items():
+                setattr(patient, key, value)
+            db.session.commit()
+            return make_response(jsonify(patient.to_dict()), 200)
+        else:
+            return make_response(jsonify({"error": "Patient not found"}), 404)
 
-        db.session.add(updating_patient)
-        db.session.commit()
-
-        response = make_response(
-            updating_patient.to_dict,
-            200
-        )
-
-        return response
-    
     def delete(self, id):
-        deleting_patient = Patient.query.filter_by(id=id).first()
-        db.session.delete(deleting_patient)
-        db.session.commit()
-        response = {
-            "message": "Your patient has been deleted successfully"
-        }
-        return make_response(
-            jsonify(response),
-            200
-        )
-    
+        patient = Patient.query.get(id)
+        if patient:
+            db.session.delete(patient)
+            db.session.commit()
+            return make_response(jsonify({"message": "Patient deleted successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Patient not found"}), 404)
+
 api.add_resource(PatientById, "/patients/<int:id>")
 
 class Appointments(Resource):
@@ -355,86 +272,67 @@ class Appointments(Resource):
                 "reason": appointment.reason,
                 "datetime": appointment.datetime,
                 "doctor_name": appointment.doctor_name,
-                "doctor_id" : appointment.doctor.id,
+                "doctor_id": appointment.doctor_id,
             }
             for appointment in appointments
         ]
-        response = make_response(
-            jsonify(my_appointment_lists),
-            200
-        )
+        response = make_response(jsonify(my_appointment_lists), 200)
         return response
     
     def post(self):
         data = request.get_json()
         
         new_appointment = Appointment(
-            id = data["id"],
-            patient_name = data["patient_name"],
-            reason = data["reason"],
-            doctor_name = data["doctor_name"],
-            datetime = data["datetime"],
-            doctor_id = data["doctor_id"]
+            id=data["id"],
+            patient_name=data["patient_name"],
+            reason=data["reason"],
+            doctor_name=data["doctor_name"],
+            datetime=data["datetime"],
+            doctor_id=data["doctor_id"]
         )
         db.session.add(new_appointment)
         db.session.commit()
-        response = {
-            "message": "Your Appointment has been scheduled successfully"
-        }
-        return make_response(
-            jsonify(response),
-            201
-        )
+        response = {"message": "Your Appointment has been scheduled successfully"}
+        return make_response(jsonify(response), 201)
 
 api.add_resource(Appointments, "/appointments")
 
 class AppointmentById(Resource):
     def get(self, id):
-        appointments_id = Appointment.query.all()
-        appointments_id_list = [
-            {
+        appointment = Appointment.query.get(id)
+        if appointment:
+            response = {
                 "id": appointment.id,
                 "patient_name": appointment.patient_name,
                 "reason": appointment.reason,
                 "datetime": appointment.datetime,
                 "doctor_name": appointment.doctor_name,
-                "doctor_id" : appointment.doctor.id,
+                "doctor_id": appointment.doctor_id,
             }
-            for appointment in appointments_id
-        ]
-        response = make_response(
-            jsonify(appointments_id_list),
-            200
-        )
-        return response
-    
+            return make_response(jsonify(response), 200)
+        else:
+            return make_response(jsonify({"error": "Appointment not found"}), 404)
+
     def patch(self, id):
-        updating_appointment = Appointment.query.filter_by(id=id).first()
-        for attr in request.form:
-            setattr(updating_appointment, attr, request.form[attr])
+        appointment = Appointment.query.get(id)
+        if appointment:
+            data = request.get_json()
+            for key, value in data.items():
+                setattr(appointment, key, value)
+            db.session.commit()
+            return make_response(jsonify(appointment.to_dict()), 200)
+        else:
+            return make_response(jsonify({"error": "Appointment not found"}), 404)
 
-        db.session.add(updating_appointment)
-        db.session.commit()
-
-        response = make_response(
-            updating_appointment.to_dict,
-            200
-        )
-
-        return response
-    
     def delete(self, id):
-        deleting_appointment = Appointment.query.filter_by(id=id).first()
-        db.session.delete(deleting_appointment)
-        db.session.commit()
-        response = {
-            "message": "Your Appointment has been deleted successfully"
-        }
-        return make_response(
-            jsonify(response),
-            200
-        )
-    
+        appointment = Appointment.query.get(id)
+        if appointment:
+            db.session.delete(appointment)
+            db.session.commit()
+            return make_response(jsonify({"message": "Appointment deleted successfully"}), 200)
+        else:
+            return make_response(jsonify({"error": "Appointment not found"}), 404)
+
 api.add_resource(AppointmentById, "/appointments/<int:id>")
 
 class Departments(Resource):
@@ -525,7 +423,5 @@ class DepartmentById(Resource):
         )
     
 api.add_resource(DepartmentById, "/departments/<int:id>")
-
-
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

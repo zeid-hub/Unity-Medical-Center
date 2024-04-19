@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-
+import "./Apointments.css";
 function Appointments() {
-  const [appointmentsList, setappointmentsList] = useState([]);
+  const [appointmentsList, setAppointmentsList] = useState([]);
+  const [newAppointment, setNewAppointment] = useState({
+    patient_name: "",
+    datetime: "",
+    doctor_name: "",
+    reason: ""
+  });
+  //
 
-  useEffect(() => {
+  const fetchAppointments = () => {
     fetch("/appointments")
       .then((res) => {
         if (!res.ok) {
@@ -12,26 +19,104 @@ function Appointments() {
         return res.json();
       })
       .then((data) => {
-        console.log("data from API:", data); // Log the data received from the API
-        setappointmentsList(data);
+        setAppointmentsList(data);
       })
       .catch((error) => console.error("Error fetching appointments data:", error));
+  };
+
+  useEffect(() => {
+    fetchAppointments();
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("/appointments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newAppointment),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        fetchAppointments();
+        setNewAppointment({
+          patient_name: "",
+          datetime: "",
+          doctor_name: "",
+          reason: ""
+        });
+      })
+      .catch((error) => console.error("Error adding appointment:", error));
+  };
+
+  const handleDelete = (id) => {
+    fetch(`/appointments/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        fetchAppointments();
+      })
+      .catch((error) => console.error("Error deleting appointment:", error));
+  };
+
   return (
-    <div className="container">
-      <h1 className="header">
-        <span className="span">Appointments</span>
-      </h1>
-      <ul className="list">
+    <div>
+      <h2>Appointments</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Patient Name:
+          <input
+            type="text"
+            value={newAppointment.patient_name}
+            onChange={(e) => setNewAppointment({ ...newAppointment, patient_name: e.target.value })}
+          />
+        </label>
+        <label>
+          Date & Time:
+          <input
+            type="datetime-local"
+            value={newAppointment.datetime}
+            onChange={(e) => setNewAppointment({ ...newAppointment, datetime: e.target.value })}
+          />
+        </label>
+        <label>
+          Doctor Name:
+          <input
+            type="text"
+            value={newAppointment.doctor_name}
+            onChange={(e) => setNewAppointment({ ...newAppointment, doctor_name: e.target.value })}
+          />
+        </label>
+        <label>
+          Reason:
+          <input
+            type="text"
+            value={newAppointment.reason}
+            onChange={(e) => setNewAppointment({ ...newAppointment, reason: e.target.value })}
+          />
+        </label>
+        <button type="submit">Add Appointment</button>
+      </form>
+      <ul>
         {appointmentsList.map((appointment) => (
           <li key={appointment.id}>
-            <h2 className="inner-header">
-              <span className="patient-name">Patient Name:</span> {appointment.patient_name}
-            </h2>
-            <h4>Date & Time: {appointment.datetime}</h4>
-            <h4>Doctor Name: {appointment.doctor_name}</h4>
-            <h4>Reason: {appointment.reason}</h4>
+            <h3>Patient Name: {appointment.patient_name}</h3>
+            <p>Date & Time: {appointment.datetime}</p>
+            <p>Doctor Name: {appointment.doctor_name}</p>
+            <p>Reason: {appointment.reason}</p>
+            <button onClick={() => handleDelete(appointment.id)}>Delete</button>
           </li>
         ))}
       </ul>
