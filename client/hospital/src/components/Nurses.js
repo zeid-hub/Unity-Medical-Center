@@ -137,14 +137,30 @@ function Nurses() {
         <button type="submit">Add Nurse</button>
       </form>
       <h2>Nurses List</h2>
-      <ul>
+      {/* <ul>
         {nursesList.map((nurse) => (
           <li key={nurse.id}>
             {nurse.name} -{" "}
             <button onClick={() => handleDelete(nurse.id)}>Delete</button>
           </li>
         ))}
-      </ul>
+      </ul> */}
+      <ul>
+  {nursesList.map((nurse) => (
+    <li key={nurse.id}>
+      <div>
+        <strong>ID:</strong> {nurse.id}<br />
+        <strong>Name:</strong> {nurse.name}<br />
+        <strong>Department ID:</strong> {nurse.department_id}<br />
+        <strong>Doctor ID:</strong> {nurse.doctor_id}<br />
+        <strong>Language Spoken:</strong> {nurse.language_spoken}<br />
+        <strong>License Number:</strong> {nurse.license_number}<br />
+      </div>
+      <button onClick={() => handleDelete(nurse.id)}>Delete</button>
+    </li>
+  ))}
+</ul>
+
     </div>
   );
 }

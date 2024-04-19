@@ -162,7 +162,16 @@ function Patients() {
       <ul id="patients-list">
         {patientsList.map((patient) => (
           <li key={patient.id}>
-            {patient.name} -{" "}
+            <div>
+              <strong>ID:</strong> {patient.id}<br />
+              <strong>Name:</strong> {patient.name}<br />
+              <strong>Age:</strong> {patient.age}<br />
+              <strong>Gender:</strong> {patient.gender}<br />
+              <strong>Contact:</strong> {patient.contact}<br />
+              <strong>Diagnosis:</strong> {patient.diagnosis}<br />
+              <strong>Bed Number:</strong> {patient.bed_number}<br />
+              <strong>Doctor ID:</strong> {patient.doctor_id}<br />
+            </div>
             <button onClick={() => handleDelete(patient.id)}>Delete</button>
           </li>
         ))}

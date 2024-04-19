@@ -48,7 +48,14 @@
 }
 
 .patient-form-container li {
-  margin-bottom: 5px;
+  margin-bottom: 20px; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  padding: 15px; 
+}
+
+.patient-form-container li div {
+  margin-bottom: 10px;
 }
 
 .patient-form-container li button {
