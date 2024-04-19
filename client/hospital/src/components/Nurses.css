@@ -1,0 +1,61 @@
+/* NurseForm Component Styles */
+.nurse-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.nurse-form-container h2 {
+  margin-bottom: 20px;
+}
+
+.nurse-form-container form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.nurse-form-container form input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.nurse-form-container form button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.nurse-form-container form button:hover {
+  background-color: #45a049;
+}
+
+.nurse-form-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nurse-form-container ul li {
+  margin-bottom: 10px;
+}
+
+.nurse-form-container ul li button {
+  padding: 5px 10px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.nurse-form-container ul li button:hover {
+  background-color: #d32f2f;
+}

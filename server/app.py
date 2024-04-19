@@ -182,8 +182,8 @@ class Nurses(Resource):
                 "name": nurse.name,
                 "license_number": nurse.license_number,
                 "language_spoken": nurse.language_spoken,
-                "doctor_id": nurse.doctor_id,
-                "department_id": nurse.department_id
+                "doctor_id": nurse.doctor.id if nurse.doctor else None,
+                "department_id": nurse.department.id if nurse.department else None
             }
             for nurse in nurses
         ]
@@ -269,7 +269,6 @@ class Patients(Resource):
         data = request.get_json()
         
         new_patient = Patient(
-            id=data["id"],
             name=data["name"],
             age=data["age"],
             gender=data["gender"],
