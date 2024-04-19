@@ -16,7 +16,7 @@ nurse_patient_association = db.Table(
     db.Column('nurse_id', db.Integer, db.ForeignKey('nurses.id')),
     db.Column('patient_id', db.Integer, db.ForeignKey('patients.id'))
 )
-class User(db.Model, SerializerMixin):
+class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,16 +26,25 @@ class User(db.Model, SerializerMixin):
     @hybrid_property
     def password_hash(self):
         return self._password_hash
-    
+
     @password_hash.setter
-    def password_hash(self,my_password):
-        my_value = bcrypt.generate_password_hash(my_password.encode('utf-8'))
-        self._password_hash = my_value.decode('utf-8')
+    def password_hash(self, plaintext_password):
+        self._password_hash = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
 
-    def authenticate(self,my_password):
-        is_true = bcrypt.check_password_hash(self._password_hash, userpassword.encode('utf-8'))
-        return is_true
+    def authenticate(self, plaintext_password):
+        return bcrypt.check_password_hash(self.password_hash, plaintext_password)
 
+    def __repr__(self):
+        return f"<User {self.id}, {self.username}, {self._password_hash}>"
+
+class TokenBlocklist(db.Model):
+    __tablename__ = "token_blocklist"
+    id=db.Column(db.Integer, primary_key=True)
+    jti=db.Column(db.String, nullable=False, index=True)
+    created_At = db.Column(db.String, nullable=False, )
+
+    def __repr__(self):
+        return f"<TokenBlocklist {self.id}, {self.jti}, {self.created_At}>"
 
 class Doctor(db.Model, SerializerMixin):
     __tablename__ = "doctors"

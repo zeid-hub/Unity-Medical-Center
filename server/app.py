@@ -1,7 +1,40 @@
-from config import app, db, api, Resource, make_response, jsonify, request
-from models import User, Doctor, Patient, Nurse, Appointment, Department
+from config import app, db, api, Resource, make_response, jsonify, request, create_access_token, jwt_required, jwt, datetime
+from models import User, TokenBlocklist, Doctor, Patient, Nurse, Appointment, Department
+from flask_jwt_extended import current_user,get_jwt,set_access_cookies
+
+@jwt.user_lookup_loader
+def find_user_using_token(_jwt_header,jwt_data):
+    identity = jwt_data['sub']
+    token_belongs_to = User.query.filter_by(username=identity).one_or_none()
+    return token_belongs_to
+
+@app.after_request
+def refresh_almost_expired_tokens(response):
+    
+    try:
+        
+        token = get_jwt()
+        print(token)
+        originalExpiry = token['exp']
+        timeNow = datetime.datetime.now(datetime.timezone.utc)
+        newExpiry = datetime.datetime.timestamp(timeNow + datetime.timedelta(seconds=60))
+        if newExpiry > originalExpiry:
+            print("Inside if statement")
+            access_token = create_access_token(identity=current_user.username)
+            print(access_token)
+            set_access_cookies(response,access_token)
+        return response
+    except(RuntimeError, KeyError):
+        return response
+
+@jwt.token_in_blocklist_loader
+def check_if_token_is_revoked(jwt_header, jwt_payload):
+    token = jwt_payload['jti']
+    target_token = TokenBlocklist.query.filter_by(jti=token).one_or_none()
+    return target_token is not None
 
 class Home(Resource):
+    @jwt_required()
     def get(self):
         response = {
             "message": "Welcome to our Unity Medical Centre"
@@ -13,25 +46,55 @@ api.add_resource(Home, "/")
 class AddUser(Resource):
     def post(self):
         data = request.get_json()
-        new_user = User(username=data['username'])
-        new_user.set_password(data['password'])  # Use set_password method to hash the password
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return jsonify({"error": "Username and password are required."}), 400
+
+        new_user = User(username=username)
+        new_user.password_hash = password
         db.session.add(new_user)
         db.session.commit()
-        return make_response({"message": "User Created Successfully"}, 201)
+        
+        return make_response({"message": "The user has been created successfully"}, 201)
 
 api.add_resource(AddUser, "/adduser")
 
 class LoginUser(Resource):
     def post(self):
         data = request.get_json()
-        user = User.query.filter_by(username=data['username']).first()
-        if user and user.authenticate(data['password']):
-            return make_response(jsonify({"message": "Login Successful"}), 200)
+        new_user = User.query.filter_by(username=data['username']).first()
+        if not new_user:
+            return make_response(
+                jsonify({"Error": "You Have Entered Incorrect Username"}),
+                404
+            )
+        if new_user.authenticate(data['password']):
+            generated_token = create_access_token(identity=new_user.username)
+            return make_response(
+                jsonify({"message":"Login Successful", "token": generated_token}),
+                200
+            )
         else:
-            return make_response(jsonify({"error": "Invalid Credentials"}), 403)
-            
+            return make_response(
+                jsonify({"error":"You Have Entered The Wrong Password"}),
+                403
+            )
+       
 api.add_resource(LoginUser, "/login")
 
+class LogOutUser(Resource):
+    @jwt_required
+    def delete(self):
+        userstoken = get_jwt()['jti']
+        timenow = datetime.datetime.now(datetime.timezone.utc)
+        tokentoblock=TokenBlocklist(jti=userstoken,created_At=timenow)
+        db.session.add(tokentoblock)
+        db.session.commit()
+        return make_response({"message":"Successfully logged out"},200)
+
+api.add_resource(LogOutUser, "/logout")
 
 class Doctors(Resource):
     def get(self):
