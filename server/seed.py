@@ -4,7 +4,7 @@ from faker import Faker
 from datetime import datetime
 import random
 from app import app
-from models import db, Doctor, Nurse, Patient, Appointment, Department, User
+from models import db, Doctor, Nurse, Patient, Appointment, Department, User, TokenBlocklist
 
 fake = Faker()
 
@@ -171,6 +171,7 @@ with app.app_context():
     db.session.query(Doctor).delete()
     db.session.query(Department).delete()
     db.session.query(User).delete()
+    db.session.query(TokenBlocklist).delete()
     db.session.commit()
 
     # Creating departments

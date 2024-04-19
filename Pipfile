@@ -15,6 +15,7 @@ faker = "*"
 ipdb = "*"
 flask-bcrypt = "*"
 sqlalchemy = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 sqlalchemy-serializer = "*"
