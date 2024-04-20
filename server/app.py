@@ -415,6 +415,15 @@ class Departments(Resource):
             200
         )
         return response
+        # my_department_lists = []
+        # for department in departments:
+        #     my_department_lists.append(department.to_dict())
+
+        # response = make_response(
+        #     jsonify(my_department_lists),
+        #     200
+        # )
+        # return response
     
     def post(self):
         data = request.get_json()
