@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Doctors.css";
 
 function Doctors() {
-  const [doctorList, setDoctorList] = useState([]);
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [languageSpoken, setLanguageSpoken] = useState("");
   const [departmentId, setDepartmentId] = useState("");
-  const [departments, setDepartments] = useState([]);
-
-  useEffect(() => {
-    fetchDoctors();
-    fetchDepartments();
-  }, []);
+  const [doctorsList, setDoctorsList] = useState([]);
 
   const fetchDoctors = () => {
     fetch("/doctors")
@@ -24,28 +19,19 @@ function Doctors() {
         return res.json();
       })
       .then((data) => {
-        setDoctorList(data);
+        setDoctorsList(data);
       })
-      .catch((error) => console.error("Error fetching doctors:", error));
+      .catch((error) => console.error("Error fetching doctors data:", error));
   };
 
-  const fetchDepartments = () => {
-    fetch("/departments")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setDepartments(data);
-      })
-      .catch((error) => console.error("Error fetching departments:", error));
-  };
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
-  const handleAddDoctor = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const newDoctor = {
+      id,
       name,
       license_number: licenseNumber,
       specialization,
@@ -67,17 +53,19 @@ function Doctors() {
         return res.json();
       })
       .then((data) => {
-        setDoctorList([...doctorList, data]);
+        console.log("Doctor added successfully:", data);
+        setId("");
         setName("");
         setLicenseNumber("");
         setSpecialization("");
         setLanguageSpoken("");
         setDepartmentId("");
+        fetchDoctors();
       })
       .catch((error) => console.error("Error adding doctor:", error));
   };
 
-  const handleDeleteDoctor = (id) => {
+  const handleDelete = (id) => {
     fetch(`/doctors/${id}`, {
       method: "DELETE",
     })
@@ -87,16 +75,25 @@ function Doctors() {
         }
         return res.json();
       })
-      .then(() => {
-        setDoctorList(doctorList.filter((doctor) => doctor.id !== id));
+      .then((data) => {
+        console.log("Doctor deleted successfully:", data);
+        fetchDoctors();
       })
       .catch((error) => console.error("Error deleting doctor:", error));
   };
 
   return (
-    <div className="container">
+    <div className="doctor-form-container" id="doctors-form">
       <h2>Add Doctor</h2>
-      <form onSubmit={handleAddDoctor}>
+      <form onSubmit={handleSubmit}>
+        <label>
+          ID:
+          <input
+            type="text"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
+        </label>
         <label>
           Name:
           <input
@@ -131,32 +128,27 @@ function Doctors() {
         </label>
         <label>
           Department ID:
-          <select
+          <input
+            type="number"
             value={departmentId}
             onChange={(e) => setDepartmentId(e.target.value)}
-          >
-            <option value="">Select Department</option>
-            {departments.map((dept) => (
-              <option key={dept.id} value={dept.id}>
-                {dept.name}
-              </option>
-            ))}
-          </select>
+          />
         </label>
         <button type="submit">Add Doctor</button>
       </form>
-
-      <h1 className="header">Our Doctors</h1>
-      <ul className="list">
-        {doctorList.map((doctor) => (
+      <h2>Doctors List</h2>
+      <ul id="doctors-list">
+        {doctorsList.map((doctor) => (
           <li key={doctor.id}>
-            <h2 className="name">Name: {doctor.name}</h2>
-            <p>LICENSE NUMBER: {doctor.license_number}</p>
-            <p>SPECIALIZATION: {doctor.specialization}</p>
-            <p>LANGUAGE SPOKEN: {doctor.language_spoken}</p>
-            <p>DEPARTMENT NAME: {doctor.department_name}</p>
-            <p>DEPARTMENT ID: {doctor.department_id}</p>
-            <button onClick={() => handleDeleteDoctor(doctor.id)}>Delete</button>
+            <div>
+              <strong>ID:</strong> {doctor.id}<br />
+              <strong>Name:</strong> {doctor.name}<br />
+              <strong>License Number:</strong> {doctor.license_number}<br />
+              <strong>Specialization:</strong> {doctor.specialization}<br />
+              <strong>Language Spoken:</strong> {doctor.language_spoken}<br />
+              <strong>Department ID:</strong> {doctor.department_id}<br />
+            </div>
+            <button onClick={() => handleDelete(doctor.id)}>Delete</button>
           </li>
         ))}
       </ul>
@@ -165,3 +157,166 @@ function Doctors() {
 }
 
 export default Doctors;
+
+
+
+
+// import React, { useState, useEffect } from "react";
+// import "./Doctors.css";
+
+// function Doctors() {
+//   const [id, setId] = useState("");
+//   const [name, setName] = useState("");
+//   const [licenseNumber, setLicenseNumber] = useState("");
+//   const [specialization, setSpecialization] = useState("");
+//   const [languageSpoken, setLanguageSpoken] = useState("");
+//   const [departmentId, setDepartmentId] = useState("");
+//   const [doctorsList, setDoctorsList] = useState([]);
+
+//   const fetchDoctors = () => {
+//     fetch("/doctors")
+//       .then((res) => {
+//         if (!res.ok) {
+//           throw new Error("Network response was not ok");
+//         }
+//         return res.json();
+//       })
+//       .then((data) => {
+//         setDoctorsList(data);
+//       })
+//       .catch((error) => console.error("Error fetching doctors data:", error));
+//   };
+
+//   useEffect(() => {
+//     fetchDoctors();
+//   }, []);
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     const newDoctor = {
+//       id,
+//       name,
+//       license_number: licenseNumber,
+//       specialization,
+//       language_spoken: languageSpoken,
+//       department_id: departmentId,
+//     };
+
+//     fetch("/doctors", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(newDoctor),
+//     })
+//       .then((res) => {
+//         if (!res.ok) {
+//           throw new Error("Network response was not ok");
+//         }
+//         return res.json();
+//       })
+//       .then((data) => {
+//         console.log("Doctor added successfully:", data);
+//         setId("");
+//         setName("");
+//         setLicenseNumber("");
+//         setSpecialization("");
+//         setLanguageSpoken("");
+//         setDepartmentId("");
+//         fetchDoctors();
+//       })
+//       .catch((error) => console.error("Error adding doctor:", error));
+//   };
+
+//   const handleDelete = (id) => {
+//     fetch(`/doctors/${id}`, {
+//       method: "DELETE",
+//     })
+//       .then((res) => {
+//         if (!res.ok) {
+//           throw new Error("Network response was not ok");
+//         }
+//         return res.json();
+//       })
+//       .then((data) => {
+//         console.log("Doctor deleted successfully:", data);
+//         fetchDoctors();
+//       })
+//       .catch((error) => console.error("Error deleting doctor:", error));
+//   };
+
+//   return (
+//     <div className="doctor-form-container" id="doctors-form">
+//       <h2>Add Doctor</h2>
+//       <form onSubmit={handleSubmit}>
+//         <label>
+//           ID:
+//           <input
+//             type="text"
+//             value={id}
+//             onChange={(e) => setId(e.target.value)}
+//           />
+//         </label>
+//         <label>
+//           Name:
+//           <input
+//             type="text"
+//             value={name}
+//             onChange={(e) => setName(e.target.value)}
+//           />
+//         </label>
+//         <label>
+//           License Number:
+//           <input
+//             type="text"
+//             value={licenseNumber}
+//             onChange={(e) => setLicenseNumber(e.target.value)}
+//           />
+//         </label>
+//         <label>
+//           Specialization:
+//           <input
+//             type="text"
+//             value={specialization}
+//             onChange={(e) => setSpecialization(e.target.value)}
+//           />
+//         </label>
+//         <label>
+//           Language Spoken:
+//           <input
+//             type="text"
+//             value={languageSpoken}
+//             onChange={(e) => setLanguageSpoken(e.target.value)}
+//           />
+//         </label>
+//         <label>
+//           Department ID:
+//           <input
+//             type="number"
+//             value={departmentId}
+//             onChange={(e) => setDepartmentId(e.target.value)}
+//           />
+//         </label>
+//         <button type="submit">Add Doctor</button>
+//       </form>
+//       <h2>Doctors List</h2>
+//       <ul id="doctors-list">
+//         {doctorsList.map((doctor) => (
+//           <li key={doctor.id}>
+//             <div>
+//               <strong>ID:</strong> {doctor.id}<br />
+//               <strong>Name:</strong> {doctor.name}<br />
+//               <strong>License Number:</strong> {doctor.license_number}<br />
+//               <strong>Specialization:</strong> {doctor.specialization}<br />
+//               <strong>Language Spoken:</strong> {doctor.language_spoken}<br />
+//               <strong>Department ID:</strong> {doctor.department_id}<br />
+//             </div>
+//             <button onClick={() => handleDelete(doctor.id)}>Delete</button>
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
+
+// export default Doctors;

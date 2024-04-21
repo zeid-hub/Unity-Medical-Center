@@ -198,7 +198,7 @@ with app.app_context():
             license_number=fake.random_number(digits=5),
             specialization=random.choice(doctor_specializations),
             language_spoken=random.choice(["English", "Kiswahili", "Arabic", "French", "Turkish", "Kisomali", "Kiluhya", "Kikamba"]),
-            department_id=fake.random_element(elements=[dep.id for dep in departments])
+            department_id=fake.random_int(min=1, max=30)
         )
         doctors.append(doctor)
 
@@ -228,7 +228,7 @@ with app.app_context():
         patient = Patient(
             name=fake.name(),
             age=fake.random_int(min=18, max=90),
-            gender=fake.random_element(elements=["Male", "Female"]),
+            gender=random.choice(["Male", "Female"]),
             contact=fake.phone_number(),
             diagnosis=random.choice(disease_list),
             bed_number=fake.random_number(digits=2),

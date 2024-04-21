@@ -1,0 +1,30 @@
+.logout-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .logout-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .logout-container button {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .logout-container button:hover {
+    background-color: #a93226;
+  }
+.logout-container button:active {
+    background-color: #922b21;
+  }
+  
+  .logout-container button:focus {
+    outline: none;
+  }
+

@@ -38,7 +38,9 @@ class User(db.Model):
         return f"<User {self.id}, {self.username}, {self._password_hash}>"
 
 class TokenBlocklist(db.Model):
-    __tablename__ = "token_blocklist"
+
+    __tablename__ = "token_blocklists"
+    
     id=db.Column(db.Integer, primary_key=True)
     jti=db.Column(db.String, nullable=False, index=True)
     created_At = db.Column(db.String, nullable=False, )
@@ -54,7 +56,6 @@ class Doctor(db.Model, SerializerMixin):
     license_number = db.Column(db.String)
     specialization = db.Column(db.String)
     language_spoken = db.Column(db.String)
-    department_name = db.Column(db.String)
     department_id = db.Column(db.Integer(), db.ForeignKey("departments.id"))
 
     # Adding relationships

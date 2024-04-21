@@ -1,6 +1,6 @@
-.navbar-container {
-  background-color: #324B4E;
-  padding: 15px;
+/* .navbar-container {
+  background-color: #26288f;
+  padding: 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,4 +25,49 @@
   font-weight: bold;
   color: white;
   margin-right: 60px; 
+} */
+
+
+
+
+.navbar-container {
+  background-color: #26288f;
+  padding: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  font-size: 22px;
+  font-family: 'Dancing Script', cursive;
+}
+
+.navbar-container a {
+  color: rgb(207, 204, 207);
+  text-decoration: none;
+  margin-right: 50px;
+  font-size: 20px;
+}
+
+.navbar-container a:hover {
+  text-decoration: underline;
+}
+
+.navbar-brand {
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  margin-right: 60px;
+}
+
+.logout-btn {
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #a93226;
 }

@@ -1,0 +1,133 @@
+/* Inherit styles from SignupForm */
+/* .login-form {
+    @extend .signup-form;
+  }
+  
+  .login-form button {
+    background-color: #4CAF50; 
+  }
+  
+  .login-form button:hover {
+    background-color: #3e8e41;
+  }
+   */
+
+
+
+
+/* 
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .login-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .login-input {
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .login-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+   */
+
+
+
+
+
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f5f5f5; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-image: url("https://media.istockphoto.com/id/1446042496/photo/medical-meeting-and-laptop-for-team-in-office-in-discussion-brainstorming-and-planning-doctor.webp?b=1&s=170667a&w=0&k=20&c=G4Uii7gnG3hJJ9w43iFkoGmdFRr9SKhK8bRxRAoKCWY=");
+  background-repeat: no-repeat; /* Prevent background image from repeating */
+  background-size: cover; /* Ensure the background image covers the entire container */
+}
+
+
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  font-weight: bold;
+  color: hsl(0, 0%, 3%); 
+}
+
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; 
+}
+
+
+.login-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: large;
+  font-weight: bold;
+  color: hsl(0, 0%, 3%);
+}
+
+
+.login-input {
+  width: 100%;
+  padding: 10px 15px; 
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  background-color: #f0f0f0; 
+}
+
+
+.login-button {
+  background-color: #007bff; 
+  color: #fff;
+  /* color: hsl(0, 0%, 3%); */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.2s ease-in-out; 
+}
+
+.login-button:hover {
+  background-color: #0062cc; 
+} 

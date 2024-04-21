@@ -1,68 +1,76 @@
-/* NurseForm Component Styles */
 .nurse-form-container {
-  max-width: 600px;
-  margin: 0 auto;
+  width: 80%;
+  margin: auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #f9f9f9;
+  background-image: url("https://plus.unsplash.com/premium_photo-1682141142889-218debf4f8dc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bnVyc2VzfGVufDB8fDB8fHww");
+  background-repeat: no-repeat; 
+  background-size: cover;
 }
 
 .nurse-form-container h2 {
-  margin-bottom: 20px;
-}
-
-.nurse-form-container form label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.nurse-form-container form input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  font-size: 24px;
 }
 
-.nurse-form-container form button {
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
+.nurse-form-container form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.nurse-form-container label {
+  margin-right: 10px;
+  flex: 1 0 200px;
+}
+
+/* .nurse-form-container input {
+  flex: 2 0 auto;
+  width: calc(100% - 120px);
+  margin-right: 10px;
+} */
+
+.nurse-form-container button {
+  margin-top: 10px;
+  padding: 8px 15px;
   border: none;
-  border-radius: 5px;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
 }
 
-.nurse-form-container form button:hover {
-  background-color: #45a049;
+.nurse-form-container button:hover {
+  background-color: #0056b3;
 }
 
-.nurse-form-container ul {
+ul {
   list-style-type: none;
   padding: 0;
 }
 
-.nurse-form-container ul li {
-  margin-bottom: 20px; 
-  border: 1px solid #ccc; 
-  border-radius: 5px; 
-  padding: 15px; 
+ul li {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #fff;
 }
 
-.nurse-form-container ul li div {
+ul li div {
   margin-bottom: 10px;
 }
 
-.nurse-form-container ul li button {
+ul li button {
   padding: 5px 10px;
-  background-color: #f44336;
-  color: white;
   border: none;
   border-radius: 3px;
+  background-color: #dc3545;
+  color: #fff;
   cursor: pointer;
 }
 
-.nurse-form-container ul li button:hover {
-  background-color: #d32f2f;
+ul li button:hover {
+  background-color: #bd2130;
 }

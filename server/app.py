@@ -106,7 +106,6 @@ class Doctors(Resource):
                 "license_number": doctor.license_number,
                 "specialization": doctor.specialization,
                 "language_spoken": doctor.language_spoken,
-                "department_name": doctor.department_name,
                 "department_id": doctor.department.id if doctor.department else None
             }
             for doctor in doctors
@@ -124,7 +123,6 @@ class Doctors(Resource):
             license_number=data["license_number"],
             specialization=data["specialization"],
             language_spoken=data["language_spoken"],
-            department_name=data["department_name"],
             department_id=data["department_id"]
         )
         db.session.add(new_doctor)
@@ -144,7 +142,6 @@ class DoctorById(Resource):
                 "license_number": doctor.license_number,
                 "specialization": doctor.specialization,
                 "language_spoken": doctor.language_spoken,
-                "department_name": doctor.department_name,
                 "department_id": doctor.department.id
             }
             return make_response(jsonify(response), 200)
@@ -332,8 +329,8 @@ class Appointments(Resource):
                 "id": appointment.id,
                 "patient_name": appointment.patient_name,
                 "reason": appointment.reason,
-                "datetime": appointment.datetime,
                 "doctor_name": appointment.doctor_name,
+                "datetime": appointment.datetime,
                 "doctor_id": appointment.doctor_id,
             }
             for appointment in appointments
@@ -415,16 +412,7 @@ class Departments(Resource):
             200
         )
         return response
-        # my_department_lists = []
-        # for department in departments:
-        #     my_department_lists.append(department.to_dict())
 
-        # response = make_response(
-        #     jsonify(my_department_lists),
-        #     200
-        # )
-        # return response
-    
     def post(self):
         data = request.get_json()
         

@@ -1,8 +1,8 @@
-"""create database table
+"""Create tables
 
-Revision ID: 4723c1ea91a5
+Revision ID: e32b03b67b8b
 Revises: 
-Create Date: 2024-04-19 12:05:13.410264
+Create Date: 2024-04-20 22:50:30.602808
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4723c1ea91a5'
+revision = 'e32b03b67b8b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -26,14 +26,14 @@ def upgrade():
     sa.Column('number_of_doctors', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('token_blocklist',
+    op.create_table('token_blocklists',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('jti', sa.String(), nullable=False),
     sa.Column('created_At', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    with op.batch_alter_table('token_blocklist', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_token_blocklist_jti'), ['jti'], unique=False)
+    with op.batch_alter_table('token_blocklists', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_token_blocklists_jti'), ['jti'], unique=False)
 
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -48,7 +48,6 @@ def upgrade():
     sa.Column('license_number', sa.String(), nullable=True),
     sa.Column('specialization', sa.String(), nullable=True),
     sa.Column('language_spoken', sa.String(), nullable=True),
-    sa.Column('department_name', sa.String(), nullable=True),
     sa.Column('department_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['department_id'], ['departments.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -110,9 +109,9 @@ def downgrade():
     op.drop_table('appointments')
     op.drop_table('doctors')
     op.drop_table('users')
-    with op.batch_alter_table('token_blocklist', schema=None) as batch_op:
-        batch_op.drop_index(batch_op.f('ix_token_blocklist_jti'))
+    with op.batch_alter_table('token_blocklists', schema=None) as batch_op:
+        batch_op.drop_index(batch_op.f('ix_token_blocklists_jti'))
 
-    op.drop_table('token_blocklist')
+    op.drop_table('token_blocklists')
     op.drop_table('departments')
     # ### end Alembic commands ###

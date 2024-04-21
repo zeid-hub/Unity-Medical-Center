@@ -1,91 +1,76 @@
-/* Doctors Page Styling */
-.doctors {
-  max-width: 700px; /* Increased max-width for better responsiveness */
-  margin: 0 auto;
+.doctor-form-container {
+  width: 80%;
+  margin: auto;
   padding: 20px;
-  border: 1px solid #ddd; /* Adjusted border color for better contrast */
+  border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f5f5f5; /* Lighter background color */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  min-height: 100vh; /* Set minimum height to fill viewport */
-  display: flex; /* Allow vertical centering */
-  flex-direction: column; /* Stack content vertically */
-  justify-content: center; /* Center content vertically */
-  overflow-y: auto; /* Add scrollbar if content overflows */
+  background-color: #f9f9f9;
+  background-image: url("https://plus.unsplash.com/premium_photo-1661893870720-e2f6d09d96d7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZG9jdG9yc3xlbnwwfHwwfHx8MA%3D%3D");
+  background-repeat: no-repeat; 
+  background-size: cover;
 }
 
-/* Add Doctor Form Styles */
-.add-doctor-form {
+.doctor-form-container h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.doctor-form-container form {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
 }
 
-.add-doctor-form label {
-  flex: 1; /* Make labels take up equal space */
-  margin-bottom: 5px;
+.doctor-form-container label {
+  margin-right: 10px;
+  flex: 1 0 200px;
 }
 
-.add-doctor-form input,
-.add-doctor-form select {
-  width: 100%;
-  padding: 10px; /* Increased padding for a more spacious feel */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem; /* Use rem for better responsiveness */
-}
+/* .doctor-form-container input {
+  flex: 2 0 auto;
+  width: calc(100% - 120px);
+  margin-right: 10px;
+} */
 
-.add-doctor-form button {
-  background-color: #4CAF50; /* Green color for primary button */
-  color: white;
-  padding: 12px 20px; /* Increased button size */
+.doctor-form-container button {
+  margin-top: 10px;
+  padding: 8px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
-  transition: 0.3s ease-in-out all; /* Smooth hover effect */
 }
 
-.add-doctor-form button:hover {
-  background-color: #3e8e41; /* Darken green on hover */
+.doctor-form-container button:hover {
+  background-color: #0056b3;
 }
 
-/* Doctors List Styles */
-.doctors-list {
-  list-style: none; /* Remove default bullet points */
+ul {
+  list-style-type: none;
   padding: 0;
 }
 
-.doctor-item {
+ul li {
   margin-bottom: 20px;
-  padding: 15px; /* Adjusted padding for better readability */
-  border: 1px solid #ddd; /* Adjusted border color for better contrast */
+  border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #fff; /* White background */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle bottom shadow */
-  transition: 0.3s ease-in-out all; /* Smooth hover effect */
+  padding: 15px;
+  background-color: #fff;
 }
 
-.doctor-item h2 {
-  margin-top: 0;
+ul li div {
   margin-bottom: 10px;
-  font-size: 1.2rem; /* Use rem for better responsiveness */
 }
 
-.doctor-item p {
-  margin: 5px 0;
-}
-
-.doctor-item button { /* Assuming you have a delete button */
-  background-color: #dc3545; /* Red color for secondary button */
-  color: white;
-  padding: 8px 15px; /* Adjusted padding for better button size */
+ul li button {
+  padding: 5px 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
+  background-color: #dc3545;
+  color: #fff;
   cursor: pointer;
-  transition: 0.3s ease-in-out all; /* Smooth hover effect */
 }
 
-.doctor-item button:hover {
-  background-color: #c82333; /* Darken red on hover */
+ul li button:hover {
+  background-color: #bd2130;
 }

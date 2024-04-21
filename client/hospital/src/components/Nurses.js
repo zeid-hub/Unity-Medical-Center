@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Nurses.css";
 
 function Nurses() {
-  const [id, setId] = useState(""); // Added ID state
+  const [id, setId] = useState(""); 
   const [name, setName] = useState("");
   const [departmentId, setDepartmentId] = useState("");
   const [doctorId, setDoctorId] = useState("");
@@ -54,7 +54,7 @@ function Nurses() {
       })
       .then((data) => {
         console.log("Nurse added successfully:", data);
-        setId(""); // Clear ID field after submission
+        setId(""); 
         setName("");
         setDepartmentId("");
         setDoctorId("");
@@ -137,14 +137,6 @@ function Nurses() {
         <button type="submit">Add Nurse</button>
       </form>
       <h2>Nurses List</h2>
-      {/* <ul>
-        {nursesList.map((nurse) => (
-          <li key={nurse.id}>
-            {nurse.name} -{" "}
-            <button onClick={() => handleDelete(nurse.id)}>Delete</button>
-          </li>
-        ))}
-      </ul> */}
       <ul>
   {nursesList.map((nurse) => (
     <li key={nurse.id}>
