@@ -5,15 +5,15 @@ function About () {
     return (
     <div className="about-us-container">
       <section className="section-introduction">
-        <h2>WELCOME TO UNITY MEDICAL CENTER</h2>
+        <h2>WELCOME TO MEDICARE HOSPITAL</h2>
         <p>
-          Since our establishment in 2025, Unity Medical Center has been dedicated to providing compassionate and high-quality healthcare services to our community. With a focus on patient-centered care and medical excellence, we strive to improve the health and well-being of every individual we serve.
+          Since our establishment in 2025, Medicare Hospital has been dedicated to providing compassionate and high-quality healthcare services to our community. With a focus on patient-centered care and medical excellence, we strive to improve the health and well-being of every individual we serve.
         </p>
       </section>
       <section className="section-mission">
         <h2>OUR MISSION</h2>
         <p>
-          Our mission at Unity Medical Center is to provide exceptional healthcare services with integrity, compassion, and respect for all. We aim to deliver personalized care tailored to the unique needs of each patient, while continuously seeking innovative ways to improve patient outcomes and experiences.
+          Our mission at Medicare Hospital is to provide exceptional healthcare services with integrity, compassion, and respect for all. We aim to deliver personalized care tailored to the unique needs of each patient, while continuously seeking innovative ways to improve patient outcomes and experiences.
         </p>
       </section>
       <section className="section-vision">
@@ -41,19 +41,19 @@ function About () {
       <section className="section-facilities">
         <h2>FACILITIES AND TECHNOLOGY</h2>
         <p>
-          Unity Medical Center is equipped with state-of-the-art facilities and advanced medical technology to ensure the highest standards of patient care. Our modern facilities allow us to provide a wide range of medical services and treatments to meet the needs of our patients.
+          Medicare Hospital is equipped with state-of-the-art facilities and advanced medical technology to ensure the highest standards of patient care. Our modern facilities allow us to provide a wide range of medical services and treatments to meet the needs of our patients.
         </p>
       </section>
       <section className="section-community">
         <h2>COMMUNITY ENGAGEMENT</h2>
         <p>
-          At Unity Medical Center, we are deeply committed to serving and supporting our community. Through outreach programs, health education initiatives, and partnerships with local organizations, we strive to improve the health and well-being of our community beyond the walls of our hospital.
+          At Medicare Hospital, we are deeply committed to serving and supporting our community. Through outreach programs, health education initiatives, and partnerships with local organizations, we strive to improve the health and well-being of our community beyond the walls of our hospital.
         </p>
       </section>
       <section className="section-contact">
         <h2>CONTACT US</h2>
         <p>
-          If you have any questions or would like to learn more about Unity Medical Center, please contact us at (123) 456-7890 or info@unitymedicalcenter.com. You can also visit us at 5th street,Eastleigh,Nairobi city.
+          If you have any questions or would like to learn more about Medicare Hospital, please contact us at (123) 456-7890 or info@unitymedicalcenter.com. You can also visit us at 5th street,Eastleigh,Nairobi city.
         </p>
       </section>
     </div>

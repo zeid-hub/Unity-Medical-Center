@@ -40,7 +40,7 @@ function SignupForm() {
 
   return (
     <div className="signup-container">
-      <h2 className="signup-title"> <span>SIGNUP TO MEDICARE HOSPITAL</span></h2>
+      <h2 className="signup-title"> SIGNUP TO <span>MEDICARE HOSPITAL</span></h2>
       {error && <p className="error-message">{error}</p>}
       <form className="signup-form" onSubmit={handleSignupSubmit}>
         <label htmlFor="username" className="signup-label">Username:</label><br />

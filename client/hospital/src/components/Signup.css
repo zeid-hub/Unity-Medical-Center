@@ -1,3 +1,4 @@
+/* Signup.css */
 .signup-container {
     max-width: 500px;
     margin: 50px auto;
@@ -5,17 +6,17 @@
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f5f5f5;
-    /* background-image: url("https://media.istockphoto.com/id/993985508/photo/building-with-large-h-sign-for-hospital.webp?b=1&s=170667a&w=0&k=20&c=i92DzaZ_c_sFHRYQqqb4MtKrwwHDEZL9UwPe4xqhOnE="); */
     background-image: url("https://media.istockphoto.com/id/1191945461/photo/modern-hospital-building.webp?b=1&s=170667a&w=0&k=20&c=E5bmJ82va_rpFIpulMMPjtYRmTY7VakJD2sohYrIs8k=");
-    background-repeat: no-repeat; /* Prevent background image from repeating */
-    background-size: cover; /* Ensure the background image covers the entire container */
+    background-repeat: no-repeat; 
+    background-size: cover;
   }
   
 
   .signup-title {
     text-align: center;
     margin-bottom: 20px;
-    font-weight: bold; 
+    font-weight: bold;
+    font-size: 40px; 
   }
   
 
